@@ -1,8 +1,3 @@
-"""Prepare one-drug DepMap/GDSC2 dataset for a first prediction experiment.
-
-Pilot mode: uses a deterministic subset of protein-coding genes, NOT the final
-LINCS L1000 + drug-target panel specified in the research proposal.
-"""
 import argparse
 import json
 import re

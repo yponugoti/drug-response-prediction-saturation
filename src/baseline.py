@@ -1,4 +1,3 @@
-"""Evaluate dummy mean and nested-CV Ridge on the same 5 held-out folds."""
 import json
 from pathlib import Path
 

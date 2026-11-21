@@ -1,4 +1,3 @@
-"""Train a two-hidden-layer PyTorch MLP with per-fold validation and early stopping."""
 import argparse
 from pathlib import Path
 
