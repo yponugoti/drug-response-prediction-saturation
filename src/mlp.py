@@ -56,6 +56,7 @@ def main():
         y_train = torch.tensor(y[subtrain_idx], dtype=torch.float32, device=device)
         y_val = torch.tensor(y[val_idx], dtype=torch.float32, device=device)
 
+        # Reproducible initialization across reruns.
         torch.manual_seed(args.seed + fold)
         model = MLP(X.shape[1]).to(device)
         optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)

@@ -1,0 +1,11 @@
+Loading DepMap gene expression (this may take a moment)...
+{
+  "drug_name": "MG-132",
+  "drug_id": "1862",
+  "cell_lines": 697,
+  "genes": 1000,
+  "seed": 0,
+  "min_cells": 300,
+  "panel": "PILOT: alphabetically selected protein-coding genes; NOT the planned LINCS+targets panel"
+}
+Saved /home/kgadamse/drug-response-project/data/processed/pilot.npz and /home/kgadamse/drug-response-project/data/processed/folds.npy

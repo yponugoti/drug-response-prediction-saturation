@@ -1,0 +1,11 @@
+Device: cpu
+Fold 1/5: Spearman=0.311; RMSE=0.720; epochs=42
+Fold 2/5: Spearman=0.327; RMSE=0.687; epochs=39
+Fold 3/5: Spearman=0.421; RMSE=0.614; epochs=37
+Fold 4/5: Spearman=0.367; RMSE=0.701; epochs=21
+Fold 5/5: Spearman=0.437; RMSE=0.726; epochs=39
+
+MLP mean and SD across folds:
+       spearman      rmse        r2
+mean  0.372654  0.689513 -0.021762
+std   0.055477  0.044740  0.175646
