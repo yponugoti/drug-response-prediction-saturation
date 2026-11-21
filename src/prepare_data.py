@@ -26,7 +26,6 @@ def find_column(frame, candidates, description):
 
 
 def cosmic_ids(series):
-    # Handles integer-like values stored as strings, numbers, or '12345.0'.
     values = pd.to_numeric(series, errors="coerce")
     return values.astype("Int64")
 
@@ -49,7 +48,6 @@ def read_model(path):
     model["ModelID"] = model["ModelID"].astype(str).str.strip()
     model["COSMIC_ID"] = cosmic_ids(model["COSMIC_ID"])
     model = model.dropna(subset=["COSMIC_ID", "ModelID"]).drop_duplicates()
-    # Don't guess if one COSMIC ID corresponds to multiple DepMap models.
     counts = model.groupby("COSMIC_ID")["ModelID"].nunique()
     ambiguous = set(counts[counts > 1].index)
     if ambiguous:
@@ -100,7 +98,6 @@ def main():
     if gdsc.empty:
         raise ValueError("No COSMIC IDs matched. Check that Model.csv and expression data are compatible.")
 
-    # Average replicate screens for a drug/cell line, then pick one DRUG_ID per name.
     gdsc = gdsc.groupby(["DRUG_NAME", "DRUG_ID", "ModelID"], as_index=False)["LN_IC50"].mean()
     counts = gdsc.groupby(["DRUG_NAME", "DRUG_ID"])["ModelID"].nunique().reset_index(name="n_cells")
     best_ids = counts.sort_values(["DRUG_NAME", "n_cells"], ascending=[True, False]).drop_duplicates("DRUG_NAME")
@@ -115,12 +112,10 @@ def main():
     chosen = eligible.iloc[0]
     data = gdsc[(gdsc["DRUG_NAME"] == chosen["DRUG_NAME"]) & (gdsc["DRUG_ID"] == chosen["DRUG_ID"])]
     all_gene_cols = [c for c in expr.columns if c != "ModelID"]
-    # Sort by gene name, not response or expression magnitude; same rule for every drug.
     gene_cols = sorted(all_gene_cols, key=lambda c: str(c).lower())[:args.max_genes] if args.max_genes > 0 else sorted(all_gene_cols)
     selected = expr[["ModelID"] + gene_cols].merge(data[["ModelID", "LN_IC50"]], on="ModelID", validate="one_to_one")
     selected = selected.sort_values("ModelID").reset_index(drop=True)
     numeric = selected[gene_cols].apply(pd.to_numeric, errors="coerce")
-    # Only retain genes measured in every selected cell. No value imputation.
     usable_cols = numeric.columns[numeric.notna().all(axis=0)].tolist()
     if not usable_cols:
         raise ValueError("No fully observed expression features in the chosen panel.")
